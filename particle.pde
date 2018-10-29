@@ -9,6 +9,7 @@ class Particle {
   float xPos, yPos, diameter, xVel, yVel, gravity;
   boolean fall;
   boolean isInit;
+  float reverse;
 
   Particle(float xp, float yp, float dia, float xv, float yv) { 
     xPos = xp;
@@ -61,10 +62,16 @@ class Particle {
     }
   }
 
-  void init() {
+  void init(boolean attract) { 
     isInit = true;
     theta = atan2((mouseY-yPos), (mouseX-xPos)); 
-    yVel = -sin(theta)*2.5f; //set velocity to opposite of mouse position (times 2.5)
-    xVel = -cos(theta)*2.5f;
+    if (attract) reverse = 1.0;
+    else reverse = -1.0;
+    yVel = reverse * sin(theta)*2.5f; //set velocity to opposite of mouse position (times 2.5)
+    xVel = reverse * cos(theta)*2.5f;
   }
+
+  void reset() {
+  }
+
 }

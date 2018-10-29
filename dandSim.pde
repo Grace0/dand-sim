@@ -26,12 +26,11 @@ public void setup() {
     dx = random(-radius, radius);
     dy = sqrt(radius*radius-dx*dx) * random(-1.0, 1.0);
     parts.add(new Particle(width/2+dx, height/2+dy, particleDia, 0, 0));
-    
   }
 }
 
 public void draw() {
-  
+
   background(195, 90, 49);
   stroke(245);
   strokeWeight(3);
@@ -48,13 +47,12 @@ public void draw() {
     parts.get(i).move();
     parts.get(i).display();
   }
- 
 }
 
 
 public void mousePressed() {
   for (int i=0; i<parts.size(); i++) {
-    parts.get(i).init();
+    parts.get(i).init(false);
   }
 }
 
@@ -64,6 +62,12 @@ public void keyPressed() {
       speedChange *= 1.1;
     } else if (keyCode == DOWN) {
       speedChange *= 0.9;
+    }
+  }
+
+  if (key == TAB) {
+    for (int i=0; i<parts.size(); i++) {
+      parts.get(i).init(true);
     }
   }
 }
