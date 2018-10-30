@@ -9,6 +9,8 @@ int numParticles = 200;
 int radius = 40;
 int particleDia = 5;
 int bottomRow = 0;
+boolean reverse = false;
+boolean init = false;
 
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
@@ -43,9 +45,16 @@ public void draw() {
     noStroke();
   }
 
-  for (int i=0; i<parts.size(); i++) {
-    parts.get(i).move();
-    parts.get(i).display();
+  if (!reverse) {
+    for (int i=0; i<parts.size(); i++) {
+      parts.get(i).move();
+      parts.get(i).display();
+    }
+  } else {
+    for (int i=0; i<parts.size(); i++) {
+      parts.get(i).reset();
+      parts.get(i).display();
+    }
   }
 }
 
@@ -53,6 +62,7 @@ public void draw() {
 public void mousePressed() {
   for (int i=0; i<parts.size(); i++) {
     parts.get(i).init(false);
+    init = true;
   }
 }
 
@@ -62,6 +72,8 @@ public void keyPressed() {
       speedChange *= 1.1;
     } else if (keyCode == DOWN) {
       speedChange *= 0.9;
+    } else if (keyCode == LEFT) {
+      reverse = true;
     }
   }
 

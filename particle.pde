@@ -1,5 +1,7 @@
 class Particle { 
 
+  ArrayList<FloatList> traj;
+
   boolean left = false;
   float maxSpeed;
   int counter = 0;
@@ -10,6 +12,7 @@ class Particle {
   boolean fall;
   boolean isInit;
   float reverse;
+  int i = 0;
 
   Particle(float xp, float yp, float dia, float xv, float yv) { 
     xPos = xp;
@@ -22,6 +25,8 @@ class Particle {
     gravity = random(0.1f, 0.6f);
     sway = 0;
     isInit = false;
+
+    traj = new ArrayList<FloatList>();
   }
 
   void display() {
@@ -30,7 +35,16 @@ class Particle {
   }
 
   void move() {
-
+    
+    if (isInit) {
+    FloatList point = new FloatList();
+    point.append(xPos);
+    point.append(yPos);
+    traj.add(point);
+    i = traj.size()-1;
+    //println(traj.get(traj.size()-1) + "  " + traj.size());
+    }
+    
     if (abs(xVel) > 0 || abs(yVel) > 0) { 
       yVel *= 0.98f;
       xVel *= 0.98f;
@@ -72,6 +86,10 @@ class Particle {
   }
 
   void reset() {
+    if (i >= 0) {
+      xPos = traj.get(i).get(0);
+      yPos = traj.get(i).get(1);
+    }
+    i--;
   }
-
 }
