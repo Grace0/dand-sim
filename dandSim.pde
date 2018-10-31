@@ -1,16 +1,15 @@
 import java.util.ArrayList;
 
-boolean clicked = false; //true forever after clicking first time
-float speedChange = 1.0;
-float dx = 0.0; 
-float dy = 0.0;
-float theta = 0.0;
+boolean clicked; //true forever after clicking first time
+float speedChange;
+float dx, dy;
+float theta;
 int numParticles = 200;
 int radius = 40;
 int particleDia = 5;
-int bottomRow = 0;
-boolean reverse = false;
-boolean init = false;
+int bottomRow;
+boolean reverse;
+boolean init;
 
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
@@ -20,11 +19,6 @@ public void setup() {
   bottomRow = height;
 
   for (int i = 0; i < numParticles; i++) { //make 200 particles within a circle
-
-    //dx = random(-1.0, 1.0); //circle part of a cos wave between -pi, pi
-    //dy = cos(dx) * random(-1.0, 1.0);
-    //parts.add(new Particle(width/2+dx*40, height/2+dy*40, 5, 0, 0)); //xPos, yPos, diameter, xVel, yVel
-
     dx = random(-radius, radius);
     dy = sqrt(radius*radius-dx*dx) * random(-1.0, 1.0);
     parts.add(new Particle(width/2+dx, height/2+dy, particleDia, 0, 0));
@@ -32,26 +26,20 @@ public void setup() {
 }
 
 public void draw() {
-
-  background(195, 90, 49);
+  background(0, 0, 0); 
   stroke(245);
   strokeWeight(3);
   line(width/2, height/2, width/2, bottomRow); //stem
   noStroke(); 
   ellipse(width/2, height/2, 25, 10); //bud
-  if (!parts.get(0).isInit) {
-    textSize(20);
-    text("click for wind", width/2 - 70, height-300);
-    noStroke();
-  }
 
   if (!reverse) {
-    for (int i=0; i<parts.size(); i++) {
+    for (int i = 0; i < parts.size(); i++) {
       parts.get(i).move();
       parts.get(i).display();
     }
   } else {
-    for (int i=0; i<parts.size(); i++) {
+    for (int i = 0; i < parts.size(); i++) {
       parts.get(i).reset();
       parts.get(i).display();
     }
@@ -60,7 +48,7 @@ public void draw() {
 
 
 public void mousePressed() {
-  for (int i=0; i<parts.size(); i++) {
+  for (int i = 0; i < parts.size(); i++) {
     parts.get(i).init(false);
     init = true;
   }

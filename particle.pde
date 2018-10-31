@@ -2,17 +2,17 @@ class Particle {
 
   ArrayList<FloatList> traj;
 
-  boolean left = false;
-  float maxSpeed;
-  int counter = 0;
-  int interval;
-  float sway;
-  float xMovement;
-  float xPos, yPos, diameter, xVel, yVel, gravity;
+  boolean left;
   boolean fall;
   boolean isInit;
-  float reverse;
-  int i = 0;
+
+  float sway;
+  float xPos, yPos, diameter, xVel, yVel, gravity;
+  float maxSpeed;
+
+  int swayCount;
+  int swayInterval;
+  int resetInc;
 
   Particle(float xp, float yp, float dia, float xv, float yv) { 
     xPos = xp;
@@ -20,10 +20,9 @@ class Particle {
     diameter = dia;
     xVel = xv;
     yVel = yv;
-    maxSpeed = 1;
-    interval = round(random(10, 80));
+    maxSpeed = 1.0;
+    swayInterval = round(random(10, 80));
     gravity = random(0.1f, 0.6f);
-    sway = 0;
     isInit = false;
 
     traj = new ArrayList<FloatList>();
@@ -35,16 +34,15 @@ class Particle {
   }
 
   void move() {
-    
+
     if (isInit) {
-    FloatList point = new FloatList();
-    point.append(xPos);
-    point.append(yPos);
-    traj.add(point);
-    i = traj.size()-1;
-    //println(traj.get(traj.size()-1) + "  " + traj.size());
+      FloatList point = new FloatList();
+      point.append(xPos);
+      point.append(yPos);
+      traj.add(point);
+      resetInc = traj.size()-1;
     }
-    
+
     if (abs(xVel) > 0 || abs(yVel) > 0) { 
       yVel *= 0.98f;
       xVel *= 0.98f;
@@ -59,12 +57,12 @@ class Particle {
       yPos += yVel;
 
       if (fall) {
-        counter++;
+        swayCount++;
         gravity += 0.002f * speedChange;
-        if (counter > interval) {
+        if (swayCount > swayInterval) {
           left =! left;
-          interval = round(random(10, 80)); //reset it
-          counter = 0;
+          swayInterval = round(random(10, 80)); //reset it
+          swayCount = 0;
         }
         if (left && xVel > -maxSpeed) {
           xVel-= sway;
@@ -79,17 +77,21 @@ class Particle {
   void init(boolean attract) { 
     isInit = true;
     theta = atan2((mouseY-yPos), (mouseX-xPos)); 
-    if (attract) reverse = 1.0;
-    else reverse = -1.0;
-    yVel = reverse * sin(theta)*2.5f; //set velocity to opposite of mouse position (times 2.5)
-    xVel = reverse * cos(theta)*2.5f;
+
+    if (attract) {
+      yVel = 1.0 * sin(theta)*2.5f;
+      xVel = 1.0 * cos(theta)*2.5f;
+    } else {
+      yVel = -1.0 * sin(theta)*2.5f;
+      xVel = -1.0 * cos(theta)*2.5f;
+    }
   }
 
   void reset() {
-    if (i >= 0) {
-      xPos = traj.get(i).get(0);
-      yPos = traj.get(i).get(1);
+    if (resetInc >= 0) {
+      xPos = traj.get(resetInc).get(0);
+      yPos = traj.get(resetInc).get(1);
     }
-    i--;
+    resetInc--;
   }
 }
