@@ -33,7 +33,7 @@ public void draw() {
   noStroke(); 
   ellipse(width/2, height/2, 25, 10); //bud
 
-  if (!reverse) {
+  if (!reverse) { //make state machine
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).move();
       parts.get(i).display();
