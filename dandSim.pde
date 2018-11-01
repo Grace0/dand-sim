@@ -10,6 +10,7 @@ int particleDia = 5;
 int bottomRow;
 boolean reverse;
 boolean init;
+int state = 0;
 
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
@@ -33,19 +34,28 @@ public void draw() {
   noStroke(); 
   ellipse(width/2, height/2, 25, 10); //bud
 
-  if (!reverse) { //make state machine
+  switch (state) {
+  case 0:
+    textSize(20);
+    text("click for wind", width/2 - 70, height-300);
+    noStroke();
+    break;
+  case 1:
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).move();
-      parts.get(i).display();
     }
-  } else {
+    break;
+  case 2:
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).reset();
-      parts.get(i).display();
     }
+    break;
+  }
+
+  for (int i = 0; i < parts.size(); i++) {
+    parts.get(i).display();
   }
 }
-
 
 public void mousePressed() {
   for (int i = 0; i < parts.size(); i++) {

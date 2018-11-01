@@ -12,7 +12,7 @@ class Particle {
   int swayInterval;
   int resetInc;
 
-  int state;
+  private int state;
   final int SLOW = 0;
   final int FALL = 1;
   final int STOP = 2;
