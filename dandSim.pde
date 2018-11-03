@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-boolean clicked; //true forever after clicking first time
+boolean clicked; 
 float speedChange;
 float dx, dy;
 float theta;
@@ -8,8 +8,7 @@ int numParticles = 200;
 int radius = 40;
 int particleDia = 5;
 int bottomRow;
-boolean reverse;
-boolean init;
+boolean initReverse, initForward;
 int state = 0;
 
 ArrayList<Particle> parts = new ArrayList<Particle>();
@@ -33,6 +32,14 @@ public void draw() {
   line(width/2, height/2, width/2, bottomRow); //stem
   noStroke(); 
   ellipse(width/2, height/2, 25, 10); //bud
+
+  print("st: " + state);
+
+  if (initReverse) {
+    state = 2;
+  } else if (initForward) {
+    state = 1;
+  }
 
   switch (state) {
   case 0:
@@ -59,8 +66,7 @@ public void draw() {
 
 public void mousePressed() {
   for (int i = 0; i < parts.size(); i++) {
-    parts.get(i).init(false);
-    init = true;
+    initForward = parts.get(i).init(false);
   }
 }
 
@@ -71,13 +77,13 @@ public void keyPressed() {
     } else if (keyCode == DOWN) {
       speedChange *= 0.9;
     } else if (keyCode == LEFT) {
-      reverse = true;
+      for (int i=0; i<parts.size(); i++) {
+      initReverse = parts.get(i).init(true);
+    } 
     }
   }
 
   if (key == TAB) {
-    for (int i=0; i<parts.size(); i++) {
-      parts.get(i).init(true);
-    }
+    
   }
 }

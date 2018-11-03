@@ -2,20 +2,18 @@ class Particle {
 
   ArrayList<FloatList> traj;
 
-  boolean left, fall, isInit;
+  private boolean left, fall, isInit;
 
-  float sway = 0.0;
-  float xPos, yPos, diameter, xVel, yVel, gravity;
-  float maxSpeed = 1.0;
+  private float sway = 0.0;
+  private float xPos, yPos, diameter, xVel, yVel, gravity;
+  private float maxSpeed = 1.0;
 
-  int swayCount;
-  int swayInterval;
-  int resetInc;
+  private int swayCount, swayInterval, resetInc;
 
   private int state;
-  final int SLOW = 0;
-  final int FALL = 1;
-  final int STOP = 2;
+  private final int SLOW = 0;
+  private final int FALL = 1;
+  private final int STOP = 2;
 
   Particle(float xp, float yp, float dia, float xv, float yv) { 
     xPos = xp;
@@ -83,8 +81,7 @@ class Particle {
     }
   }
 
-  void init(boolean attract) { 
-    isInit = true;
+  boolean init(boolean attract) { 
     theta = atan2((mouseY-yPos), (mouseX-xPos)); 
 
     if (attract) {
@@ -94,6 +91,8 @@ class Particle {
       yVel = -1.0 * sin(theta)*2.5f;
       xVel = -1.0 * cos(theta)*2.5f;
     }
+    
+    return true;
   }
 
   void reset() {
