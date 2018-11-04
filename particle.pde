@@ -35,7 +35,7 @@ class Particle {
   }
 
   void move() {
-    
+
     switch (state) {
     case SLOW:
       if (abs(xVel) > 0 || abs(yVel) > 0) {
@@ -45,6 +45,9 @@ class Particle {
           state = 1;
         }
       }
+      yPos += gravity;
+      xPos += xVel;
+      yPos += yVel;
       break;
     case FALL:
       swayCount++;
@@ -60,25 +63,24 @@ class Particle {
         xVel+= sway;
       }
       sway += 0.0001f;
+      yPos += gravity;
+      xPos += xVel;
+      yPos += yVel;
+      if (yPos >= bottomRow) {
+        state = STOP;
+      }
       break;
     case STOP:
+      yPos = bottomRow;
+      //xPos not changed
       break;
     }
 
-    if (isInit) {
-      if (yPos >= bottomRow) {
-        state = 2;
-      } else {
-        yPos += gravity;
-        xPos += xVel;
-        yPos += yVel;
-      }
-      FloatList point = new FloatList();
-      point.append(xPos);
-      point.append(yPos);
-      traj.add(point);
-      resetInc = traj.size()-1;
-    }
+    FloatList point = new FloatList();
+    point.append(xPos);
+    point.append(yPos);
+    traj.add(point);
+    resetInc = traj.size()-1;
   }
 
   boolean init(boolean attract) { 
@@ -91,7 +93,7 @@ class Particle {
       yVel = -1.0 * sin(theta)*2.5f;
       xVel = -1.0 * cos(theta)*2.5f;
     }
-    
+
     return true;
   }
 

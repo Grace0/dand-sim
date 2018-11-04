@@ -11,6 +11,11 @@ int bottomRow;
 boolean initReverse, initForward;
 int state = 0;
 
+final int INIT = 0;
+final int REPEL = 1;
+final int ATTRACT = 2;
+final int RESET = 3;
+
 ArrayList<Particle> parts = new ArrayList<Particle>();
 
 public void setup() {
@@ -42,17 +47,25 @@ public void draw() {
   }
 
   switch (state) {
-  case 0:
+  case INIT:
     textSize(20);
     text("click for wind", width/2 - 70, height-300);
     noStroke();
     break;
-  case 1:
+    
+  case REPEL:
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).move();
     }
     break;
-  case 2:
+    
+  case ATTRACT:
+  for (int i = 0; i < parts.size(); i++) {
+      parts.get(i).move();
+    }
+    break;
+    
+  case RESET:
     for (int i = 0; i < parts.size(); i++) {
       parts.get(i).reset();
     }
@@ -76,14 +89,12 @@ public void keyPressed() {
       speedChange *= 1.1;
     } else if (keyCode == DOWN) {
       speedChange *= 0.9;
-    } else if (keyCode == LEFT) {
-      for (int i=0; i<parts.size(); i++) {
-      initReverse = parts.get(i).init(true);
-    } 
     }
   }
 
-  if (key == TAB) {
-    
+  if (key == 32) { //space
+    for (int i=0; i<parts.size(); i++) {
+        initReverse = parts.get(i).init(true);
+      }
   }
 }
