@@ -63,16 +63,17 @@ class Particle {
         xVel+= sway;
       }
       sway += 0.0001f;
-      yPos += gravity;
-      xPos += xVel;
-      yPos += yVel;
+     
       if (yPos >= bottomRow) {
         state = STOP;
+      } else {
+         xPos += xVel;
+         yPos += (yVel + gravity);
       }
       break;
     case STOP:
-      yPos = bottomRow;
-      //xPos not changed
+      yVel = 0;
+      xVel = 0;
       break;
     }
 
