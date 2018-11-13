@@ -11,6 +11,8 @@ int bottomRow;
 boolean initReverse, initForward;
 int state = 0;
 
+int x2, y2;
+
 final int INIT = 0;
 final int REPEL = 1;
 final int ATTRACT = 2;
@@ -38,7 +40,6 @@ public void draw() {
   noStroke(); 
   ellipse(width/2, height/2, 25, 10); //bud
 
-  print("st: " + state);
 
   if (initReverse) {
     state = 2;
@@ -75,12 +76,25 @@ public void draw() {
   for (int i = 0; i < parts.size(); i++) {
     parts.get(i).display();
   }
+  
+  if (x2 != 0) {
+    stroke(255);
+    noFill();
+  //bezier(mouseX, mouseY, 410, 20, 440, 300, 640/2, 360/2);
+   x2 = (int)lerp(640/2, mouseX, 1.0);
+   y2 = (int)lerp(360/2, mouseY, 1.0);
+  line(640/2, 360/2, x2, y2);
+ 
+  }
 }
+
 
 public void mousePressed() {
   for (int i = 0; i < parts.size(); i++) {
     initForward = parts.get(i).init(false);
   }
+  x2 = mouseX;
+  y2 = mouseY;
 }
 
 public void keyPressed() {
